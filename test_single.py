@@ -75,6 +75,10 @@ def main():
                     bboxes = random_bbox(config, batch_size=ground_truth.size(0))
                     x, mask = mask_image(ground_truth, bboxes, config)
 
+                print(mask)
+                print(torch.min(mask))
+                print(torch.max(mask))
+
                 # Set checkpoint path
                 if not args.checkpoint_path:
                     checkpoint_path = os.path.join('checkpoints',
@@ -84,7 +88,7 @@ def main():
                     checkpoint_path = args.checkpoint_path
 
                 # Define the trainer
-                netG = Generator(config['netG'], cuda, device_ids).cuda()
+                netG = Generator(config['netG'], cuda).cuda()
                 # Resume weight
                 last_model_name = get_model_list(checkpoint_path, "gen", iteration=args.iter)
                 netG.load_state_dict(torch.load(last_model_name))
@@ -98,6 +102,7 @@ def main():
 
                 # Inference
                 x1, x2, offset_flow = netG(x, mask)
+                print(mask)
                 inpainted_result = x2 * mask + x * (1. - mask)
 
                 vutils.save_image(inpainted_result, args.output, padding=0, normalize=True)
