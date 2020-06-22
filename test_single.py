@@ -28,13 +28,9 @@ def main():
     config = get_config(args.config)
 
     # CUDA configuration
-    cuda = config['cuda']
-    device_ids = config['gpu_ids']
-    if cuda:
-        os.environ['CUDA_VISIBLE_DEVICES'] = ','.join(str(i) for i in device_ids)
-        device_ids = list(range(len(device_ids)))
-        config['gpu_ids'] = device_ids
-        cudnn.benchmark = True
+    cuda = True
+    cudnn.benchmark = True
+    device_ids = None # Unused
 
     print("Arguments: {}".format(args))
 
@@ -88,7 +84,7 @@ def main():
                     checkpoint_path = args.checkpoint_path
 
                 # Define the trainer
-                netG = Generator(config['netG'], cuda, device_ids)
+                netG = Generator(config['netG'], cuda, device_ids).cuda()
                 # Resume weight
                 last_model_name = get_model_list(checkpoint_path, "gen", iteration=args.iter)
                 netG.load_state_dict(torch.load(last_model_name))
