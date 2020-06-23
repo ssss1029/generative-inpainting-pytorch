@@ -44,7 +44,11 @@ assert len(classes_chosen) == 100
 # Subset for this worker
 classes_chosen = np.array_split(classes_chosen, args.total_workers)[args.worker_number]
 
-test_transform = transforms.Compose([transforms.Resize((256, 256)), transforms.ToTensor()])
+test_transform = transforms.Compose([
+    transforms.Resize((256, 256)), 
+    transforms.ToTensor(), 
+    normalize
+])
 
 class ImageNetSubsetDataset(torchvision.datasets.ImageFolder):
     """
@@ -204,15 +208,6 @@ class FolderWithPath(ImageNetSubsetDataset):
         unnormalized_image.save(save_path)
 
         return 0
-
-def get_image(path, img_shape=(256, 256)):
-    img = default_loader(path)
-    img = transforms.Resize(img_shape)(img)
-    img = transforms.CenterCrop(img_shape)(img)
-    img = transforms.ToTensor()(img)
-    img = normalize(img)
-    img = img.unsqueeze(dim=0)
-    return img
 
 def random_mask(mask_shape=(50, 50), img_shape=(256, 256), num=1):
     """Generate a random tlhw with configuration.
