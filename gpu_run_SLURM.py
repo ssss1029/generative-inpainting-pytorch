@@ -21,10 +21,10 @@ class Config:
     # Specifies tasks to run. It maps tmux session name to the command to run in that session.
     JOBS = {
         # Distorting job x 4 GPUs
-        "distort_0" : "python3 make_dataset_002.py --total-workers=4 --worker-number=0",
-        "distort_1" : "python3 make_dataset_002.py --total-workers=4 --worker-number=1",
-        "distort_2" : "python3 make_dataset_002.py --total-workers=4 --worker-number=2",
-        "distort_3" : "python3 make_dataset_002.py --total-workers=4 --worker-number=3",
+        "distort_0" : "python3 make_dataset_003.py --total-workers=4 --worker-number=0",
+        "distort_1" : "python3 make_dataset_003.py --total-workers=4 --worker-number=1",
+        "distort_2" : "python3 make_dataset_003.py --total-workers=4 --worker-number=2",
+        "distort_3" : "python3 make_dataset_003.py --total-workers=4 --worker-number=3",
     }
 
     # Time to wait between putting jobs on GPUs (in seconds). This is useful because it might take time 
